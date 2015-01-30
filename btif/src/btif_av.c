@@ -824,7 +824,11 @@ static BOOLEAN btif_av_state_opened_handler(btif_sm_event_t event, void *p_data)
             }
             btif_sm_change_state(btif_av_cb.sm_handle, BTIF_AV_STATE_IDLE);
             break;
-
+#if (AVRC_CTLR_INCLUDED == TRUE)
+        case BTA_AV_REMOTE_RSP_EVT:
+            btif_rc_handler(event, (tBTA_AV*)p_data);
+            break;
+#endif
         case BTA_AV_RECONFIG_EVT:
             if((btif_av_cb.flags & BTIF_AV_FLAG_PENDING_START) &&
                 (p_av->reconfig.status == BTA_AV_SUCCESS))
